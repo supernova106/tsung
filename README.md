@@ -36,6 +36,11 @@ vm.overcommit_memory = 1
 ```
 ./setup-tsung.sh
 ```
+
+- generate a RSA key-pair
+- save the private key at `/home/ubuntu/.ssh/id_rsa`
+- `ubuntu` user should have all permission on `.ssh` 
+- `ssh <slave_ip>` should be ok without prompting anything
 - install consul
 - bootstrap consul server
 
@@ -69,6 +74,12 @@ consul-template -template "tsung.tpl:tsung.xml"
 
 - start consul member and ask them join the `tsungmaster`
 - debug `consul members`
+
+#Usage
+
+- you should be able to run as `ubuntu` user
+- `tsung -f tsung.xml -k start`
+- open your browser at: `<tsung_master_host>:8091` to view the report
 
 #Contact
 - Binh Nguyen

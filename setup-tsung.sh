@@ -8,3 +8,6 @@ sudo apt-get update && \
     autoconf
 git clone https://github.com/processone/tsung.git \
     cd tsung && ./configure && make && sudo make install
+
+mkdir /tmp/consul
+sudo mkdir /etc/consul.d
