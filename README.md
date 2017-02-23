@@ -45,7 +45,7 @@ vm.overcommit_memory = 1
 - bootstrap consul server
 
 ```
-./start_consul_server.sh
+./start-consul.sh
 ```
 
 - install `consul-template`
