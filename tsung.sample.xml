@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!DOCTYPE tsung SYSTEM "/tsung-1.0.dtd">
+<tsung loglevel="notice" version="1.0">
+  <clients>
+    {{ range nodes }}
+    <client host="{{ .Node }}" use_controller_vm="true" maxusers="64000" />{{ end }}
+  </clients>
+
+  <servers>
+    <server host="127.0.0.1" port="80" type="tcp" />
+  </servers>
+
+  <load>
+    <arrivalphase phase="1" duration="120" unit="second">
+      <users arrivalrate="500" unit="second" />
+    </arrivalphase>
+    <arrivalphase phase="2" duration="600" unit="second">
+      <users arrivalrate="3000" unit="second" />
+    </arrivalphase>
+  </load>
+
+
+  <options>
+    <option name="ports_range" min="1025" max="65535"/>
+  </options>
+
+  <sessions>
+    <session name="websocket" probability="100" type="ts_websocket">
+
+        <request subst="true">
+             <websocket type="connect" path="/ws"></websocket>
+        </request>
+
+        <request subst="true">
+            <websocket type="message">{"event":"subscribe","id":"%%ts_user_server:get_unique_id%%","secret_key":"LOADTESTKEY","data":["LOADTEST_T"],"user":{"id":"U_%%ts_user_server:get_unique_id%%"}}</websocket>
+        </request>
+        <for var="i" from="1" to="100" incr="1">
+          <thinktime value="30"/>
+
+          <request subst="true">
+              <websocket type="message">{"event":"ping","id":"p1"}</websocket>
+          </request>
+
+        </for>
+<!--
+        <request>
+            <websocket type="close"></websocket>
+        </request>
+-->
+    </session>
+  </sessions>
+</tsung>
+
